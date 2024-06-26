@@ -21,8 +21,8 @@ public class StudentManagementSystemApplication {
   Map<String, String> students = new HashMap<>();
 
   @GetMapping("/studentInfo")
-  public String getStudentInfo() {
-    return students.toString();
+  public Map<String,String> getStudentInfo() {
+    return students;
   }
 
   @PostMapping("/add")
