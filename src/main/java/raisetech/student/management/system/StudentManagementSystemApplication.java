@@ -1,4 +1,4 @@
-package raisetech.StudentManagementSystem;
+package raisetech.student.management.system;
 
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
