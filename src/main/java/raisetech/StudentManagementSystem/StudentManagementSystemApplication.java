@@ -14,6 +14,7 @@ public class StudentManagementSystemApplication {
 
   @Autowired
   private StudentRepository studentRepository;
+  @Autowired
   private StudentCourseRepository courseRepository;
 
   public static void main(String[] args) {
