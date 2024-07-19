@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="ja" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
   <title>受講生一覧</title>
 </head>
@@ -17,6 +17,10 @@
     <th>メールアドレス</th>
     <th>住んでいる地域</th>
     <th>備考欄</th>
+    <th>受講コース
+      受講開始日
+    </th>
+
   </tr>
   </thead>
   <tbody>
@@ -30,6 +34,14 @@
     <td th:text="${studentDetail.student.mailaddress}">hana@example.com</td>
     <td th:text="${studentDetail.student.area}">大阪府大阪市</td>
     <td th:text="${studentDetail.student.remark}">現在は事務職</td>
+    <td>
+      <div class="course-cards">
+        <div class="card" th:each="course : ${studentDetail.studentCourses}">
+          <h3 th:text="${course.courseName}"></h3>
+          <p th:text="${course.dateStart}"></p>
+        </div>
+      </div>
+    </td>
   </tr>
   </tbody>
 </table>

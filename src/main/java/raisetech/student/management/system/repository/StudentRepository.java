@@ -3,26 +3,57 @@ package raisetech.student.management.system.repository;
 import java.util.List;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Options;
 import org.apache.ibatis.annotations.Select;
 import raisetech.student.management.system.data.Student;
 import raisetech.student.management.system.data.StudentCourse;
 
 /**
  * 受講生情報を扱うリポジトリ。
- *
+ * <p>
  * 受講生、コースの情報の検索ができるクラスです。
  */
 
 @Mapper
 public interface StudentRepository {
 
+  /**
+   * studentsテーブルの全件取得。
+   *
+   * @return　一覧をリストにして表示
+   */
+
   @Select("SELECT * FROM students")
   List<Student> searchStudent();
+
+  /**
+   * students_coursesテーブルの全件取得
+   *
+   * @return　一覧をリストで表示
+   */
 
   @Select("SELECT * FROM students_courses")
   List<StudentCourse> searchCourse();
 
-  @Insert("INSERT INTO students(fullname,nickname,age,gender,mailaddress,area,remark)"
-      + " VALUES(#{fullname},#{nickname},#{age},#{gender},#{mailaddress},#{area},#{remark}")
+  /**
+   * studentsテーブルに新規データを登録
+   *
+   * @param student
+   */
+
+  @Insert(
+      "INSERT INTO students(student_id,fullname,furigana,nickname,age,gender,mailaddress,area,remark,is_deleted)"
+          + " VALUES(#{studentId},#{fullname},#{furigana},#{nickname},#{age},#{gender},#{mailaddress},#{area},#{remark},#{isDeleted})")
+  @Options(useGeneratedKeys = true, keyProperty = "studentId", keyColumn = "student_id")
   void insertStudent(Student student);
+
+  /**
+   * students_coursesテーブルに新規データを登録
+   */
+
+  @Insert("INSERT INTO students_courses(course_id,student_id,course_name,date_start,date_finish) "
+      + "VALUES(#{courseId},#{studentId},#{courseName},#{dateStart},#{dateFinish})")
+  @Options(useGeneratedKeys = true, keyProperty = "courseId", keyColumn = "course_id")
+  void insertCourse(StudentCourse studentCourse);
+
 }
