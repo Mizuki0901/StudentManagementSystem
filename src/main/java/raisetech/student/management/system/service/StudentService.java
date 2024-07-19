@@ -1,7 +1,6 @@
 package raisetech.student.management.system.service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import raisetech.student.management.system.data.Student;
@@ -26,4 +25,9 @@ public class StudentService {
     return repository.searchCourse();
   }
 
+  public void insertStudents(Student student, StudentCourse studentCourse) {
+    repository.insertStudent(student);
+    studentCourse.setStudentId(student.getStudentId());
+    repository.insertCourse(studentCourse);
+  }
 }
