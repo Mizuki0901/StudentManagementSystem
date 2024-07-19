@@ -54,7 +54,7 @@ public class StudentController {
       return "registerStudent";
     }
     service.insertStudents(studentDetail.getStudent(),
-        (StudentCourse) studentDetail.getStudentCourses().getFirst());
+        studentDetail.getStudentCourses().getFirst());
     return "redirect:/studentList";
 
   }

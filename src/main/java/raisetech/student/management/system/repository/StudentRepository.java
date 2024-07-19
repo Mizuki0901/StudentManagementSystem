@@ -5,6 +5,7 @@ import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Options;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 import raisetech.student.management.system.data.Student;
 import raisetech.student.management.system.data.StudentCourse;
 
@@ -42,8 +43,8 @@ public interface StudentRepository {
    */
 
   @Insert(
-      "INSERT INTO students(student_id,fullname,furigana,nickname,age,gender,mailaddress,area,remark,is_deleted)"
-          + " VALUES(#{studentId},#{fullname},#{furigana},#{nickname},#{age},#{gender},#{mailaddress},#{area},#{remark},#{isDeleted})")
+      "INSERT INTO students VALUES(#{studentId}, #{fullname}, #{furigana}, #{nickname}, #{age}, #{gender}, "
+          + "#{mailaddress}, #{area}, #{remark}, #{isDeleted})")
   @Options(useGeneratedKeys = true, keyProperty = "studentId", keyColumn = "student_id")
   void insertStudent(Student student);
 
@@ -51,8 +52,7 @@ public interface StudentRepository {
    * students_coursesテーブルに新規データを登録
    */
 
-  @Insert("INSERT INTO students_courses(course_id,student_id,course_name,date_start,date_finish) "
-      + "VALUES(#{courseId},#{studentId},#{courseName},#{dateStart},#{dateFinish})")
+  @Insert("INSERT INTO students_courses VALUES(#{courseId}, #{studentId}, #{courseName}, #{dateStart}, #{dateFinish})")
   @Options(useGeneratedKeys = true, keyProperty = "courseId", keyColumn = "course_id")
   void insertCourse(StudentCourse studentCourse);
 
