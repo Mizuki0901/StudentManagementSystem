@@ -60,15 +60,16 @@ public class StudentService {
   /**
    * 入力された受講生情報の更新
    *
-   * @param studentDetail
+   * @param student,studentCourses
    */
 
 
   @Transactional
-  public void updateStudents(StudentDetail studentDetail) {
-    repository.updateStudent(studentDetail.getStudent());
-    for (StudentCourse studentCourse : studentDetail.getStudentCourses()) {
+  public void updateStudents(Student student, List<StudentCourse> studentCourses) {
+    repository.updateStudent(student);
+    for (StudentCourse studentCourse : studentCourses) {
       repository.updateCourse(studentCourse);
     }
   }
+
 }

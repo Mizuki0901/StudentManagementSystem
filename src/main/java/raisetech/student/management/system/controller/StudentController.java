@@ -3,9 +3,11 @@ package raisetech.student.management.system.controller;
 import java.util.List;
 import org.apache.ibatis.annotations.Update;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -86,14 +88,13 @@ public class StudentController {
 
   @GetMapping("/students/{studentId}")
   public String setStudent(@PathVariable int studentId, Model model) {
-    StudentDetail studentDetail = service.getStudentById(studentId);
-    model.addAttribute("studentDetail", studentDetail);
+    model.addAttribute("studentDetail", service.getStudentById(studentId));
     return "updateStudent";
   }
 
   @PostMapping("/updateStudent")
   public String updateStudent(@ModelAttribute StudentDetail studentDetail) {
-    service.updateStudents(studentDetail);
+    service.updateStudents(studentDetail.getStudent(), studentDetail.getStudentCourses());
     return "redirect:/studentList";
   }
 }
