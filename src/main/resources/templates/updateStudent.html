@@ -48,27 +48,31 @@
     <input type="text" id="remark" th:field="*{student.remark}" required/>
   </div>
   <div class="course-cards">
-    <div class="card" th:each="course : ${studentDetail.studentCourses}">
+    <div class="card" th:each="course, iterStat : ${studentDetail.studentCourses}">
       <div>
         <label for="courseName">受講コース:</label>
-        <input type="text" id="courseName" th:field="*{studentCourses[0].courseName}" required/>
+        <input type="text" id="courseName"
+               th:field="*{studentCourses[__${iterStat.index}__].courseName}" required/>
       </div>
       <div>
         <label for="courseId">コースID:</label>
-        <input type="text" id="courseId" th:field="*{studentCourses[0].courseId}" required/>
+        <input type="text" id="courseId"
+               th:field="*{studentCourses[__${iterStat.index}__].courseId}" required/>
       </div>
       <div>
         <label for="dateStart">受講開始日:</label>
-        <input type="date" id="dateStart" th:field="*{studentCourses[0].dateStart}">
+        <input type="date" id="dateStart"
+               th:field="*{studentCourses[__${iterStat.index}__].dateStart}">
       </div>
       <div>
         <label for="dateFinish">受講終了日:</label>
-        <input type="date" id="dateFinish" th:field="*{studentCourses[0].dateFinish}">
+        <input type="date" id="dateFinish"
+               th:field="*{studentCourses[__${iterStat.index}__].dateFinish}">
       </div>
     </div>
-  </div>
-  <div>
-    <button type="submit">更新</button>
+    <div>
+      <button type="submit">更新</button>
+    </div>
   </div>
 </form>
 </body>

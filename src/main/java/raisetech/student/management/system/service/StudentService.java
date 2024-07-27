@@ -60,7 +60,7 @@ public class StudentService {
   /**
    * 入力された受講生情報の更新
    *
-   * @param student,studentCourses
+   * @param student
    */
 
 
@@ -68,8 +68,8 @@ public class StudentService {
   public void updateStudents(Student student, List<StudentCourse> studentCourses) {
     repository.updateStudent(student);
     for (StudentCourse studentCourse : studentCourses) {
+      studentCourse.setStudentId(student.getStudentId());
       repository.updateCourse(studentCourse);
     }
   }
-
 }
