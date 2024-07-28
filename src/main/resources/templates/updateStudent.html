@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml" lang="ja">
+<head>
+  <title>受講生情報更新</title>
+</head>
+<body>
+<h1>受講生情報更新</h1>
+<form th:action="@{/updateStudent}" th:object="${studentDetail}" method="post">
+  <div>
+    <label for="studentId">受講生ID：</label>
+    <input type="text" id="studentId" th:field="*{student.studentId}" th:readonly="${true}"/>
+  </div>
+  <div>
+    <label for="fullname">名前:</label>
+    <input type="text" id="fullname" th:field="*{student.fullname}" required/>
+  </div>
+  <div>
+    <label for="furigana">ふりがな:</label>
+    <input type="text" id="furigana" th:field="*{student.furigana}" required/>
+  </div>
+  <div>
+    <label for="nickname">ニックネーム:</label>
+    <input type="text" id="nickname" th:field="*{student.nickname}" required/>
+  </div>
+  <div>
+    <label for="age">年齢:</label>
+    <input type="text" id="age" th:field="*{student.age}" required/>
+  </div>
+  <div>
+    <label for="gender">性別:</label>
+    <select id="gender" th:field="*{student.gender}" required>
+      <option value="男">男</option>
+      <option value="女">女</option>
+      <option value="その他">その他</option>
+    </select>
+    <br>
+  </div>
+  <div>
+    <label for="mailaddress">メールアドレス:</label>
+    <input type="text" id="mailaddress" th:field="*{student.mailaddress}" required/>
+  </div>
+  <div>
+    <label for="area">お住まいの地域:</label>
+    <input type="text" id="area" th:field="*{student.area}" required/>
+  </div>
+  <div>
+    <label for="remark">備考欄:</label>
+    <input type="text" id="remark" th:field="*{student.remark}" required/>
+  </div>
+  <div class="course-cards">
+    <div class="card" th:each="course, iterStat : ${studentDetail.studentCourses}">
+      <div>
+        <label for="courseName">受講コース:</label>
+        <input type="text" id="courseName"
+               th:field="*{studentCourses[__${iterStat.index}__].courseName}" required/>
+      </div>
+      <div>
+        <label for="courseId">コースID:</label>
+        <input type="text" id="courseId"
+               th:field="*{studentCourses[__${iterStat.index}__].courseId}" required/>
+      </div>
+      <div>
+        <label for="dateStart">受講開始日:</label>
+        <input type="date" id="dateStart"
+               th:field="*{studentCourses[__${iterStat.index}__].dateStart}">
+      </div>
+      <div>
+        <label for="dateFinish">受講終了日:</label>
+        <input type="date" id="dateFinish"
+               th:field="*{studentCourses[__${iterStat.index}__].dateFinish}">
+      </div>
+    </div>
+    <div>
+      <button type="submit">更新</button>
+    </div>
+  </div>
+</form>
+</body>
+</html>

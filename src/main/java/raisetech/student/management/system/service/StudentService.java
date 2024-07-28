@@ -3,8 +3,10 @@ package raisetech.student.management.system.service;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import raisetech.student.management.system.data.Student;
 import raisetech.student.management.system.data.StudentCourse;
+import raisetech.student.management.system.domain.StudentDetail;
 import raisetech.student.management.system.repository.StudentRepository;
 
 @Service
@@ -25,9 +27,49 @@ public class StudentService {
     return repository.searchCourse();
   }
 
+  /**
+   * 入力された情報をDBに登録させる
+   *
+   * @param student
+   * @param studentCourse
+   */
+
+  @Transactional
   public void insertStudents(Student student, StudentCourse studentCourse) {
     repository.insertStudent(student);
     studentCourse.setStudentId(student.getStudentId());
     repository.insertCourse(studentCourse);
+  }
+
+  /**
+   * URLのstudent_idへ来たリクエストから、該当のデータをstudentDetailにセット
+   *
+   * @param studentId
+   * @return　該当するstudent_idの受講生と受講コースの情報
+   */
+
+  public StudentDetail getStudentById(int studentId) {
+    Student student = repository.findStudentById(studentId);
+    List<StudentCourse> studentCourseList = repository.findCourseById(studentId);
+    StudentDetail studentDetail = new StudentDetail();
+    studentDetail.setStudent(student);
+    studentDetail.setStudentCourses(studentCourseList);
+    return studentDetail;
+  }
+
+  /**
+   * 入力された受講生情報の更新
+   *
+   * @param student
+   */
+
+
+  @Transactional
+  public void updateStudents(Student student, List<StudentCourse> studentCourses) {
+    repository.updateStudent(student);
+    for (StudentCourse studentCourse : studentCourses) {
+      studentCourse.setStudentId(student.getStudentId());
+      repository.updateCourse(studentCourse);
+    }
   }
 }
