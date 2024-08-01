@@ -1,6 +1,7 @@
 package raisetech.student.management.system.repository;
 
 import java.util.List;
+import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Options;
@@ -81,7 +82,7 @@ public interface StudentRepository {
    */
   @Update(
       "UPDATE students_courses SET course_id=#{courseId}, course_name=#{courseName}, date_start=#{dateStart},"
-          + "date_finish=#{dateFinish} WHERE student_id=#{studentId}")
+          + "date_finish=#{dateFinish} WHERE course_id=#{courseId}")
   void updateCourse(StudentCourse studentCourse);
 
-}
+  }
