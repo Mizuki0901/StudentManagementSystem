@@ -27,6 +27,10 @@ public class StudentService {
     return repository.searchCourse();
   }
 
+  public List<Student> deleteStudentList() {
+    return repository.searchDeleteStudent();
+  }
+
   /**
    * 入力された情報をDBに登録させる
    *
@@ -71,4 +75,5 @@ public class StudentService {
       repository.updateCourse(studentCourse);
     }
   }
+
 }

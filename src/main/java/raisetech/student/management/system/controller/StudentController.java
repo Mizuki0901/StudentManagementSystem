@@ -1,18 +1,14 @@
 package raisetech.student.management.system.controller;
 
 import java.util.List;
-import org.apache.ibatis.annotations.Update;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import raisetech.student.management.system.controller.converter.StudentConverter;
 import raisetech.student.management.system.data.Student;
 import raisetech.student.management.system.data.StudentCourse;
@@ -44,6 +40,22 @@ public class StudentController {
     model.addAttribute("StudentList", converter.convertStudentDetails(students, studentsCourses));
 
     return "studentList";
+  }
+
+  /**
+   * @param model
+   * @return 退会した受講生一覧
+   */
+
+  @GetMapping("/deletedStudentList")
+  public String getDeleteStudentList(Model model) {
+    List<Student> students = service.deleteStudentList();
+    List<StudentCourse> studentsCourses = service.searchCourseList();
+
+    model.addAttribute("deletedStudentList",
+        converter.convertStudentDetails(students, studentsCourses));
+
+    return "deletedStudentList";
   }
 
   /**
@@ -88,7 +100,8 @@ public class StudentController {
 
   @GetMapping("/students/{studentId}")
   public String setStudent(@PathVariable int studentId, Model model) {
-    model.addAttribute("studentDetail", service.getStudentById(studentId));
+    StudentDetail studentDetail = service.getStudentById(studentId);
+    model.addAttribute("studentDetail", studentDetail);
     return "updateStudent";
   }
 
@@ -97,4 +110,5 @@ public class StudentController {
     service.updateStudents(studentDetail);
     return "redirect:/studentList";
   }
+
 }
