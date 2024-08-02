@@ -3,7 +3,6 @@ package raisetech.student.management.system.controller;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -33,7 +32,6 @@ public class StudentController {
   /**
    * @return　受講生情報の一覧を表示させる
    */
-
   @GetMapping("/studentList")
   public List<StudentDetail> getStudentList() {
     List<Student> students = service.searchStudentList();
@@ -44,7 +42,6 @@ public class StudentController {
   /**
    * @return 退会した受講生一覧
    */
-
   @GetMapping("/deletedStudentList")
   public List<StudentDetail> getDeleteStudentList() {
     List<Student> students = service.deleteStudentList();
@@ -58,7 +55,6 @@ public class StudentController {
    * @param model
    * @return　登録処理
    */
-
   @GetMapping("/newStudent")
   public String newStudent(Model model) {
     model.addAttribute("studentDetail", new StudentDetail());
@@ -72,7 +68,6 @@ public class StudentController {
    * @param result
    * @return　再度一覧を表示
    */
-
   @PostMapping("/registerStudent")
   public String registerStudent(@ModelAttribute StudentDetail studentDetail, BindingResult result) {
     if (result.hasErrors()) {
@@ -91,7 +86,6 @@ public class StudentController {
    * @param model
    * @return　更新処理
    */
-
   @GetMapping("/students/{studentId}")
   public String setStudent(@PathVariable int studentId, Model model) {
     StudentDetail studentDetail = service.getStudentById(studentId);

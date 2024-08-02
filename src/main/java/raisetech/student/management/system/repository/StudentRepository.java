@@ -15,7 +15,6 @@ import raisetech.student.management.system.data.StudentCourse;
  * <p>
  * 受講生、コースの情報の検索ができるクラスです。
  */
-
 @Mapper
 public interface StudentRepository {
 
@@ -24,7 +23,6 @@ public interface StudentRepository {
    *
    * @return　一覧をリストにして表示
    */
-
   @Select("SELECT * FROM students WHERE is_deleted = 0")
   List<Student> searchStudent();
 
@@ -41,7 +39,6 @@ public interface StudentRepository {
    *
    * @return　一覧をリストにして表示
    */
-
   @Select("SELECT * FROM students WHERE is_deleted = 1")
   List<Student> searchDeleteStudent();
 
