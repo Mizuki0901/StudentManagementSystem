@@ -29,14 +29,6 @@ public interface StudentRepository {
   List<Student> searchStudent();
 
   /**
-   * students_coursesテーブルの全件取得
-   *
-   * @return　一覧をリストで表示
-   */
-  @Select("SELECT * FROM students_courses")
-  List<StudentCourse> searchCourse();
-
-  /**
    * studentsテーブルのうちis_deleted=trueのデータ。
    *
    * @return　一覧をリストにして表示
@@ -46,32 +38,46 @@ public interface StudentRepository {
   List<Student> searchDeleteStudent();
 
   /**
+   * students_coursesテーブルの全件取得
+   *
+   * @return　一覧をリストで表示
+   */
+
+  @Select("SELECT * FROM students_courses")
+  List<StudentCourse> searchCourse();
+
+  /**
    * studentsテーブルに新規データを登録
    *
    * @param student
    */
   @Insert(
-      "INSERT INTO students VALUES(#{studentId}, #{fullname}, #{furigana}, #{nickname}, #{age}, #{gender}, "
-          + "#{mailaddress}, #{area}, #{remark}, #{isDeleted})")
+      "INSERT INTO students(fullname,furigana,nickname,age,gender,mailaddress,area,remark,is_deleted)"
+          + " VALUES( #{fullname}, #{furigana}, #{nickname}, #{age}, #{gender}, "
+          + "#{mailaddress}, #{area}, #{remark}, false)")
   @Options(useGeneratedKeys = true, keyProperty = "studentId", keyColumn = "student_id")
   void insertStudent(Student student);
 
   /**
    * students_coursesテーブルに新規データを登録
    */
-  @Insert("INSERT INTO students_courses VALUES(#{courseId}, #{studentId}, #{courseName}, #{dateStart}, #{dateFinish})")
+
+  @Insert("INSERT INTO students_courses(student_id,course_name,date_start)"
+      + " VALUES( #{studentId}, #{courseName}, #{dateStart})")
   @Options(useGeneratedKeys = true, keyProperty = "courseId", keyColumn = "course_id")
   void insertCourse(StudentCourse studentCourse);
 
   /**
    * student_idから受講生の情報を表示
    */
+
   @Select("SELECT * FROM students WHERE student_id = #{studentId}")
   Student findStudentById(@Param("studentId") int studentId);
 
   /**
    * student_idからコース情報を表示
    */
+
   @Select("SELECT * FROM students_courses WHERE student_id = #{studentId}")
   List<StudentCourse> findCourseById(@Param("studentId") int studentId);
 
@@ -80,6 +86,7 @@ public interface StudentRepository {
    *
    * @param student
    */
+
   @Update(
       "UPDATE students SET fullname=#{fullname}, furigana=#{furigana}, nickname=#{nickname}, age=#{age}, mailaddress=#{mailaddress},"
           + "area=#{area}, remark=#{remark}, is_deleted=#{isDeleted} WHERE student_id=#{studentId}")
@@ -88,6 +95,7 @@ public interface StudentRepository {
   /**
    * students_coursesテーブルの情報を更新
    */
+
   @Update(
       "UPDATE students_courses SET course_id=#{courseId}, course_name=#{courseName}, date_start=#{dateStart},"
           + "date_finish=#{dateFinish} WHERE course_id=#{courseId}")

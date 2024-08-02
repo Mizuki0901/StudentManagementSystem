@@ -32,21 +32,23 @@ public class StudentService {
   }
 
   /**
-   * 入力された情報をDBに登録させる
+   * 新規登録
    *
-   * @param student
-   * @param studentCourse
+   * @return 登録した内容
    */
 
   @Transactional
-  public void insertStudents(Student student, StudentCourse studentCourse) {
-    repository.insertStudent(student);
-    studentCourse.setStudentId(student.getStudentId());
-    repository.insertCourse(studentCourse);
+  public StudentDetail insertStudents(StudentDetail studentDetail) {
+    repository.insertStudent(studentDetail.getStudent());
+    for (StudentCourse studentCourse : studentDetail.getStudentCourses()) {
+      studentCourse.setStudentId(studentDetail.getStudent().getStudentId());
+      repository.insertCourse(studentCourse);
+    }
+    return studentDetail;
   }
 
   /**
-   * URLのstudent_idへ来たリクエストから、該当のデータをstudentDetailにセット
+   * 単一検索
    *
    * @param studentId
    * @return　該当するstudent_idの受講生と受講コースの情報
@@ -62,11 +64,10 @@ public class StudentService {
   }
 
   /**
-   * 入力された受講生情報の更新
+   * 受講生情報の更新
    *
    * @param studentDetail
    */
-
 
   @Transactional
   public void updateStudents(StudentDetail studentDetail) {
@@ -75,5 +76,4 @@ public class StudentService {
       repository.updateCourse(studentCourse);
     }
   }
-
 }
