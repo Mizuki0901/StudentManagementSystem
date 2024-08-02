@@ -3,59 +3,58 @@ package raisetech.student.management.system.controller;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-import raisetech.student.management.system.controller.converter.StudentConverter;
-import raisetech.student.management.system.data.Student;
-import raisetech.student.management.system.data.StudentCourse;
 import raisetech.student.management.system.domain.StudentDetail;
 import raisetech.student.management.system.service.StudentService;
 
+/**
+ * 受講生の検索や登録、更新などを行うREST APIとして実行されるControllerです。
+ */
 @RestController
 public class StudentController {
 
   private StudentService service;
-  private StudentConverter converter;
 
+  /**
+   * コンストラクタ
+   *
+   * @param service
+   */
   @Autowired
-  public StudentController(StudentService service, StudentConverter converter) {
+  public StudentController(StudentService service) {
     this.service = service;
-    this.converter = converter;
   }
 
   /**
+   * 受講生一覧検索です。 全件検索を行うので条件指定は行わないです。
+   *
    * @return　受講生情報の一覧
    */
-
   @GetMapping("/studentList")
   public List<StudentDetail> getStudentList() {
-    List<Student> students = service.searchStudentList();
-    List<StudentCourse> studentsCourses = service.searchCourseList();
-    return converter.convertStudentDetails(students, studentsCourses);
+    return service.searchStudentList();
   }
 
   /**
+   * 論理削除された受講生を検索し一覧を表示します。
+   *
    * @return 退会した受講生一覧
    */
-
   @GetMapping("/deletedStudentList")
   public List<StudentDetail> getDeleteStudentList() {
-    List<Student> students = service.deleteStudentList();
-    List<StudentCourse> studentsCourses = service.searchCourseList();
-    return converter.convertStudentDetails(students, studentsCourses);
+    return service.deleteStudentList();
   }
 
   /**
-   * 指定されたstudent_idに該当する情報を表示
+   * 受講生検索です。 student_idに紐づく受講生の情報を取得します。
    *
-   * @param studentId
+   * @param studentId(受講生id)
    * @return　受講生情報
    */
-
   @GetMapping("/student/{studentId}")
   public StudentDetail setStudent(@PathVariable int studentId) {
     return service.getStudentById(studentId);
@@ -66,7 +65,6 @@ public class StudentController {
    *
    * @param studentDetail
    */
-
   @PostMapping("/registerStudent")
   public ResponseEntity<StudentDetail> registerStudent(@RequestBody StudentDetail studentDetail) {
     StudentDetail responseStudentDetail = service.insertStudents(studentDetail);
@@ -79,11 +77,9 @@ public class StudentController {
    * @param studentDetail
    * @return　メッセージ
    */
-
   @PostMapping("/updateStudent")
   public ResponseEntity<String> updateStudent(@RequestBody StudentDetail studentDetail) {
     service.updateStudents(studentDetail);
     return ResponseEntity.ok("更新処理が成功しました");
   }
-
 }

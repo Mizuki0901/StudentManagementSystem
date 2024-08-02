@@ -11,40 +11,50 @@ import raisetech.student.management.system.data.Student;
 import raisetech.student.management.system.data.StudentCourse;
 
 /**
- * 受講生情報を扱うリポジトリ。
- * <p>
- * 受講生、コースの情報の検索ができるクラスです。
+ * students(受講生)テーブルとstudents_courses(受講コース)テーブルに紐づくRepositoryです。
  */
-
 @Mapper
 public interface StudentRepository {
 
   /**
-   * studentsテーブルのうちis_deleted=falseのデータ。
+   * studentsテーブルのうちis_deleted=falseのデータを検索します。
    *
-   * @return　一覧をリストにして表示
+   * @return　現在在籍する受講生情報(一覧)
    */
-
   @Select("SELECT * FROM students WHERE is_deleted = 0")
   List<Student> searchStudent();
 
   /**
-   * studentsテーブルのうちis_deleted=trueのデータ。
+   * studentsテーブルのうちis_deleted=trueのデータを検索します。
    *
-   * @return　一覧をリストにして表示
+   * @return　退会した受講生情報(一覧)
    */
-
   @Select("SELECT * FROM students WHERE is_deleted = 1")
   List<Student> searchDeleteStudent();
 
   /**
-   * students_coursesテーブルの全件取得
-   *
-   * @return　一覧をリストで表示
+   * @param studentId(受講生id)
+   * @return 受講生情報(単一)
    */
+  @Select("SELECT * FROM students WHERE student_id = #{studentId}")
+  Student findStudentById(@Param("studentId") int studentId);
 
+  /**
+   * students_coursesテーブルの全件取得を行います。
+   *
+   * @return　受講生コース情報(全件)
+   */
   @Select("SELECT * FROM students_courses")
   List<StudentCourse> searchCourse();
+
+  /**
+   * student_idに紐づくコース情報を検索します。
+   *
+   * @param studentId(受講生id)
+   * @return 受講生idに紐づくコース情報
+   */
+  @Select("SELECT * FROM students_courses WHERE student_id = #{studentId}")
+  List<StudentCourse> findCourseById(@Param("studentId") int studentId);
 
   /**
    * studentsテーブルに新規データを登録
@@ -61,32 +71,16 @@ public interface StudentRepository {
   /**
    * students_coursesテーブルに新規データを登録
    */
-
   @Insert("INSERT INTO students_courses(student_id,course_name,date_start)"
       + " VALUES( #{studentId}, #{courseName}, #{dateStart})")
   @Options(useGeneratedKeys = true, keyProperty = "courseId", keyColumn = "course_id")
   void insertCourse(StudentCourse studentCourse);
 
   /**
-   * student_idから受講生の情報を表示
-   */
-
-  @Select("SELECT * FROM students WHERE student_id = #{studentId}")
-  Student findStudentById(@Param("studentId") int studentId);
-
-  /**
-   * student_idからコース情報を表示
-   */
-
-  @Select("SELECT * FROM students_courses WHERE student_id = #{studentId}")
-  List<StudentCourse> findCourseById(@Param("studentId") int studentId);
-
-  /**
    * studentsテーブルの情報を更新
    *
    * @param student
    */
-
   @Update(
       "UPDATE students SET fullname=#{fullname}, furigana=#{furigana}, nickname=#{nickname}, age=#{age}, mailaddress=#{mailaddress},"
           + "area=#{area}, remark=#{remark}, is_deleted=#{isDeleted} WHERE student_id=#{studentId}")
@@ -95,7 +89,6 @@ public interface StudentRepository {
   /**
    * students_coursesテーブルの情報を更新
    */
-
   @Update(
       "UPDATE students_courses SET course_id=#{courseId}, course_name=#{courseName}, date_start=#{dateStart},"
           + "date_finish=#{dateFinish} WHERE course_id=#{courseId}")
