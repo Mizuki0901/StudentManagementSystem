@@ -2,6 +2,7 @@ package raisetech.student.management.system.controller;
 
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -9,13 +10,15 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 import raisetech.student.management.system.controller.converter.StudentConverter;
 import raisetech.student.management.system.data.Student;
 import raisetech.student.management.system.data.StudentCourse;
 import raisetech.student.management.system.domain.StudentDetail;
 import raisetech.student.management.system.service.StudentService;
 
-@Controller
+@RestController
 public class StudentController {
 
   private StudentService service;
@@ -28,34 +31,25 @@ public class StudentController {
   }
 
   /**
-   * @param model
    * @return　受講生情報の一覧を表示させる
    */
 
   @GetMapping("/studentList")
-  public String getStudentList(Model model) {
+  public List<StudentDetail> getStudentList() {
     List<Student> students = service.searchStudentList();
     List<StudentCourse> studentsCourses = service.searchCourseList();
-
-    model.addAttribute("StudentList", converter.convertStudentDetails(students, studentsCourses));
-
-    return "studentList";
+    return converter.convertStudentDetails(students, studentsCourses);
   }
 
   /**
-   * @param model
    * @return 退会した受講生一覧
    */
 
   @GetMapping("/deletedStudentList")
-  public String getDeleteStudentList(Model model) {
+  public List<StudentDetail> getDeleteStudentList() {
     List<Student> students = service.deleteStudentList();
     List<StudentCourse> studentsCourses = service.searchCourseList();
-
-    model.addAttribute("deletedStudentList",
-        converter.convertStudentDetails(students, studentsCourses));
-
-    return "deletedStudentList";
+    return converter.convertStudentDetails(students, studentsCourses);
   }
 
   /**
@@ -106,9 +100,8 @@ public class StudentController {
   }
 
   @PostMapping("/updateStudent")
-  public String updateStudent(@ModelAttribute StudentDetail studentDetail) {
+  public ResponseEntity<String> updateStudent(@RequestBody StudentDetail studentDetail) {
     service.updateStudents(studentDetail);
-    return "redirect:/studentList";
+    return ResponseEntity.ok("更新処理が成功しました");
   }
-
 }
