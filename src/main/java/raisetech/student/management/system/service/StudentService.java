@@ -4,50 +4,70 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import raisetech.student.management.system.controller.converter.StudentConverter;
 import raisetech.student.management.system.data.Student;
 import raisetech.student.management.system.data.StudentCourse;
 import raisetech.student.management.system.domain.StudentDetail;
 import raisetech.student.management.system.repository.StudentRepository;
 
+/**
+ * 受講生の検索や登録、更新などを行うREST APIとして受け付けるControllerです。
+ */
 @Service
 public class StudentService {
 
   private StudentRepository repository;
+  private StudentConverter converter;
 
   @Autowired
-  public StudentService(StudentRepository repository) {
+  public StudentService(StudentRepository repository, StudentConverter converter) {
     this.repository = repository;
-  }
-
-  public List<Student> searchStudentList() {
-    return repository.searchStudent();
-  }
-
-  public List<StudentCourse> searchCourseList() {
-    return repository.searchCourse();
+    this.converter = converter;
   }
 
   /**
-   * 入力された情報をDBに登録させる
+   * 受講生の一覧検索です。 全件検索を行うので条件指定は行いません。
    *
-   * @param student
-   * @param studentCourse
+   * @return　受講生情報（一覧）
    */
+  public List<StudentDetail> searchStudentList() {
+    List<Student> studentList = repository.searchStudent();
+    List<StudentCourse> studentsCoursesList = repository.searchCourse();
+    return converter.convertStudentDetails(studentList, studentsCoursesList);
+  }
 
+  /**
+   * is_deleted=true(論理削除)のデータ一覧です。
+   *
+   * @return　退会した受講生情報(一覧)
+   */
+  public List<StudentDetail> deleteStudentList() {
+    List<Student> students = repository.searchDeleteStudent();
+    List<StudentCourse> studentsCourses = repository.searchCourse();
+    return converter.convertStudentDetails(students, studentsCourses);
+  }
+
+  /**
+   * 新規登録
+   *
+   * @return 登録した内容
+   */
   @Transactional
-  public void insertStudents(Student student, StudentCourse studentCourse) {
-    repository.insertStudent(student);
-    studentCourse.setStudentId(student.getStudentId());
-    repository.insertCourse(studentCourse);
+  public StudentDetail insertStudents(StudentDetail studentDetail) {
+    repository.insertStudent(studentDetail.getStudent());
+    for (StudentCourse studentCourse : studentDetail.getStudentCourses()) {
+      studentCourse.setStudentId(studentDetail.getStudent().getStudentId());
+      repository.insertCourse(studentCourse);
+    }
+    return studentDetail;
   }
 
   /**
-   * URLのstudent_idへ来たリクエストから、該当のデータをstudentDetailにセット
+   * 受講生情報の単一検索です。 student_idに紐づく受講生情報を取得したあと、その受講生に紐づくコース情報を取得します。
    *
-   * @param studentId
-   * @return　該当するstudent_idの受講生と受講コースの情報
+   * @param studentId(受講生id)
+   * @return　受講生と受講コースの情報
    */
-
   public StudentDetail getStudentById(int studentId) {
     Student student = repository.findStudentById(studentId);
     List<StudentCourse> studentCourseList = repository.findCourseById(student.getStudentId());
@@ -58,12 +78,10 @@ public class StudentService {
   }
 
   /**
-   * 入力された受講生情報の更新
+   * 受講生情報の更新
    *
    * @param studentDetail
    */
-
-
   @Transactional
   public void updateStudents(StudentDetail studentDetail) {
     repository.updateStudent(studentDetail.getStudent());
