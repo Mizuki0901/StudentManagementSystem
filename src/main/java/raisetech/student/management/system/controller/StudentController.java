@@ -46,7 +46,7 @@ public class StudentController {
    */
   @GetMapping("/deletedStudentList")
   public List<StudentDetail> getDeleteStudentList() {
-    return service.deleteStudentList();
+    return service.searchDeletedStudentList();
   }
 
   /**
@@ -56,8 +56,8 @@ public class StudentController {
    * @return　受講生情報
    */
   @GetMapping("/student/{studentId}")
-  public StudentDetail setStudent(@PathVariable int studentId) {
-    return service.getStudentById(studentId);
+  public StudentDetail getStudent(@PathVariable int studentId) {
+    return service.searchStudentById(studentId);
   }
 
   /**
@@ -67,7 +67,7 @@ public class StudentController {
    */
   @PostMapping("/registerStudent")
   public ResponseEntity<StudentDetail> registerStudent(@RequestBody StudentDetail studentDetail) {
-    StudentDetail responseStudentDetail = service.insertStudents(studentDetail);
+    StudentDetail responseStudentDetail = service.registerStudent(studentDetail);
     return ResponseEntity.ok(responseStudentDetail);
   }
 
@@ -79,7 +79,7 @@ public class StudentController {
    */
   @PostMapping("/updateStudent")
   public ResponseEntity<String> updateStudent(@RequestBody StudentDetail studentDetail) {
-    service.updateStudents(studentDetail);
+    service.updateStudent(studentDetail);
     return ResponseEntity.ok("更新処理が成功しました");
   }
 }

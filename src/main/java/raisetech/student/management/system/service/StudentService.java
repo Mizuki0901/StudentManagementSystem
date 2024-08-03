@@ -31,8 +31,8 @@ public class StudentService {
    * @return　受講生情報（一覧）
    */
   public List<StudentDetail> searchStudentList() {
-    List<Student> studentList = repository.searchStudent();
-    List<StudentCourse> studentsCoursesList = repository.searchCourse();
+    List<Student> studentList = repository.searchStudents();
+    List<StudentCourse> studentsCoursesList = repository.searchCourses();
     return converter.convertStudentDetails(studentList, studentsCoursesList);
   }
 
@@ -41,9 +41,9 @@ public class StudentService {
    *
    * @return　退会した受講生情報(一覧)
    */
-  public List<StudentDetail> deleteStudentList() {
-    List<Student> students = repository.searchDeleteStudent();
-    List<StudentCourse> studentsCourses = repository.searchCourse();
+  public List<StudentDetail> searchDeletedStudentList() {
+    List<Student> students = repository.searchDeleteStudents();
+    List<StudentCourse> studentsCourses = repository.searchCourses();
     return converter.convertStudentDetails(students, studentsCourses);
   }
 
@@ -53,12 +53,12 @@ public class StudentService {
    * @return 登録した内容
    */
   @Transactional
-  public StudentDetail insertStudents(StudentDetail studentDetail) {
+  public StudentDetail registerStudent(StudentDetail studentDetail) {
     repository.insertStudent(studentDetail.getStudent());
-    for (StudentCourse studentCourse : studentDetail.getStudentCourses()) {
+    studentDetail.getStudentCourses().forEach(studentCourse -> {
       studentCourse.setStudentId(studentDetail.getStudent().getStudentId());
       repository.insertCourse(studentCourse);
-    }
+    });
     return studentDetail;
   }
 
@@ -68,9 +68,9 @@ public class StudentService {
    * @param studentId(受講生id)
    * @return　受講生と受講コースの情報
    */
-  public StudentDetail getStudentById(int studentId) {
-    Student student = repository.findStudentById(studentId);
-    List<StudentCourse> studentCourseList = repository.findCourseById(student.getStudentId());
+  public StudentDetail searchStudentById(int studentId) {
+    Student student = repository.searchStudentById(studentId);
+    List<StudentCourse> studentCourseList = repository.searchCourseById(student.getStudentId());
     return new StudentDetail(student, studentCourseList);
   }
 
@@ -80,10 +80,9 @@ public class StudentService {
    * @param studentDetail
    */
   @Transactional
-  public void updateStudents(StudentDetail studentDetail) {
+  public void updateStudent(StudentDetail studentDetail) {
     repository.updateStudent(studentDetail.getStudent());
-    for (StudentCourse studentCourse : studentDetail.getStudentCourses()) {
-      repository.updateCourse(studentCourse);
-    }
+    studentDetail.getStudentCourses()
+        .forEach(studentCourse -> repository.updateCourse(studentCourse));
   }
 }

@@ -22,7 +22,7 @@ public interface StudentRepository {
    * @return　現在在籍する受講生情報(一覧)
    */
   @Select("SELECT * FROM students WHERE is_deleted = 0")
-  List<Student> searchStudent();
+  List<Student> searchStudents();
 
   /**
    * studentsテーブルのうちis_deleted=trueのデータを検索します。
@@ -30,14 +30,14 @@ public interface StudentRepository {
    * @return　退会した受講生情報(一覧)
    */
   @Select("SELECT * FROM students WHERE is_deleted = 1")
-  List<Student> searchDeleteStudent();
+  List<Student> searchDeleteStudents();
 
   /**
    * @param studentId(受講生id)
    * @return 受講生情報(単一)
    */
   @Select("SELECT * FROM students WHERE student_id = #{studentId}")
-  Student findStudentById(@Param("studentId") int studentId);
+  Student searchStudentById(@Param("studentId") int studentId);
 
   /**
    * students_coursesテーブルの全件取得を行います。
@@ -45,7 +45,7 @@ public interface StudentRepository {
    * @return　受講生コース情報(全件)
    */
   @Select("SELECT * FROM students_courses")
-  List<StudentCourse> searchCourse();
+  List<StudentCourse> searchCourses();
 
   /**
    * student_idに紐づくコース情報を検索します。
@@ -54,7 +54,7 @@ public interface StudentRepository {
    * @return 受講生idに紐づくコース情報
    */
   @Select("SELECT * FROM students_courses WHERE student_id = #{studentId}")
-  List<StudentCourse> findCourseById(@Param("studentId") int studentId);
+  List<StudentCourse> searchCourseById(@Param("studentId") int studentId);
 
   /**
    * studentsテーブルに新規データを登録
