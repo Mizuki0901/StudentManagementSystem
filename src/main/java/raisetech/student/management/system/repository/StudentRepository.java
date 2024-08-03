@@ -1,7 +1,6 @@
 package raisetech.student.management.system.repository;
 
 import java.util.List;
-import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Options;
@@ -16,17 +15,15 @@ import raisetech.student.management.system.data.StudentCourse;
  * <p>
  * 受講生、コースの情報の検索ができるクラスです。
  */
-
 @Mapper
 public interface StudentRepository {
 
   /**
-   * studentsテーブルの全件取得。
+   * studentsテーブルのうちis_deleted=falseのデータ。
    *
    * @return　一覧をリストにして表示
    */
-
-  @Select("SELECT * FROM students")
+  @Select("SELECT * FROM students WHERE is_deleted = 0")
   List<Student> searchStudent();
 
   /**
@@ -36,6 +33,14 @@ public interface StudentRepository {
    */
   @Select("SELECT * FROM students_courses")
   List<StudentCourse> searchCourse();
+
+  /**
+   * studentsテーブルのうちis_deleted=trueのデータ。
+   *
+   * @return　一覧をリストにして表示
+   */
+  @Select("SELECT * FROM students WHERE is_deleted = 1")
+  List<Student> searchDeleteStudent();
 
   /**
    * studentsテーブルに新規データを登録
@@ -85,4 +90,4 @@ public interface StudentRepository {
           + "date_finish=#{dateFinish} WHERE course_id=#{courseId}")
   void updateCourse(StudentCourse studentCourse);
 
-  }
+}

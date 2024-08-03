@@ -27,13 +27,16 @@ public class StudentService {
     return repository.searchCourse();
   }
 
+  public List<Student> deleteStudentList() {
+    return repository.searchDeleteStudent();
+  }
+
   /**
    * 入力された情報をDBに登録させる
    *
    * @param student
    * @param studentCourse
    */
-
   @Transactional
   public void insertStudents(Student student, StudentCourse studentCourse) {
     repository.insertStudent(student);
@@ -47,7 +50,6 @@ public class StudentService {
    * @param studentId
    * @return　該当するstudent_idの受講生と受講コースの情報
    */
-
   public StudentDetail getStudentById(int studentId) {
     Student student = repository.findStudentById(studentId);
     List<StudentCourse> studentCourseList = repository.findCourseById(student.getStudentId());
@@ -62,8 +64,6 @@ public class StudentService {
    *
    * @param studentDetail
    */
-
-
   @Transactional
   public void updateStudents(StudentDetail studentDetail) {
     repository.updateStudent(studentDetail.getStudent());
@@ -71,4 +71,5 @@ public class StudentService {
       repository.updateCourse(studentCourse);
     }
   }
+
 }
