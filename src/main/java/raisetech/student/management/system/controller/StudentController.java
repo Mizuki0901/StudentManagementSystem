@@ -66,9 +66,9 @@ public class StudentController {
    * @param studentDetail
    */
   @PostMapping("/registerStudent")
-  public ResponseEntity<StudentDetail> registerStudent(@RequestBody StudentDetail studentDetail) {
+  public ResponseEntity<String> registerStudent(@RequestBody StudentDetail studentDetail) {
     StudentDetail responseStudentDetail = service.registerStudent(studentDetail);
-    return ResponseEntity.ok(responseStudentDetail);
+    return ResponseEntity.ok("新規登録が完了しました");
   }
 
   /**
