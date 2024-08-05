@@ -17,21 +17,21 @@ public class StudentConverter {
   /**
    * 受講生に紐づくコース情報をマッピングします。 コース情報は一人の受講生に対して複数存在するので、ループして受講生詳細情報を組み立てます。
    *
-   * @param students       　受講生一覧
-   * @param studentCourses 　コース情報のリスト
+   * @param studentList       　受講生一覧
+   * @param studentCourseList 　コース情報のリスト
    * @return 受講生詳細情報のリスト
    */
-  public List<StudentDetail> convertStudentDetails(List<Student> students,
-      List<StudentCourse> studentCourses) {
+  public List<StudentDetail> convertStudentDetails(List<Student> studentList,
+      List<StudentCourse> studentCourseList) {
     List<StudentDetail> studentDetails = new ArrayList<>();
-    students.forEach(student -> {
+    studentList.forEach(student -> {
       StudentDetail studentDetail = new StudentDetail();
       studentDetail.setStudent(student);
 
-      List<StudentCourse> convertStudentCourse = studentCourses.stream()
+      List<StudentCourse> convertStudentCourselist = studentCourseList.stream()
           .filter(studentCourse -> student.getStudentId() == studentCourse.getStudentId())
           .collect(Collectors.toList());
-      studentDetail.setStudentCourses(convertStudentCourse);
+      studentDetail.setStudentCourseList(convertStudentCourselist);
       studentDetails.add(studentDetail);
     });
     return studentDetails;

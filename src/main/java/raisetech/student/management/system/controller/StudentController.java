@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import raisetech.student.management.system.domain.StudentDetail;
@@ -30,9 +31,9 @@ public class StudentController {
   }
 
   /**
-   * 受講生一覧検索です。 全件検索を行うので条件指定は行わないです。
+   * 受講生詳細の一覧検索です。 全件検索を行うので条件指定は行わないです。
    *
-   * @return　受講生情報の一覧
+   * @return　受講生詳細一覧
    */
   @GetMapping("/studentList")
   public List<StudentDetail> getStudentList() {
@@ -40,9 +41,9 @@ public class StudentController {
   }
 
   /**
-   * 論理削除された受講生を検索し一覧を表示します。
+   * 論理削除された受講生を検索し詳細の一覧を表示します。
    *
-   * @return 退会した受講生一覧
+   * @return 退会した受講生詳細一覧
    */
   @GetMapping("/deletedStudentList")
   public List<StudentDetail> getDeleteStudentList() {
@@ -53,7 +54,7 @@ public class StudentController {
    * 受講生検索です。 student_idに紐づく受講生の情報を取得します。
    *
    * @param studentId(受講生id)
-   * @return　受講生情報
+   * @return　受講生詳細
    */
   @GetMapping("/student/{studentId}")
   public StudentDetail getStudent(@PathVariable int studentId) {
@@ -61,9 +62,10 @@ public class StudentController {
   }
 
   /**
-   * 新規登録処理
+   * 受講生詳細の新規登録を行います。
    *
    * @param studentDetail
+   * @return 実行結果
    */
   @PostMapping("/registerStudent")
   public ResponseEntity<String> registerStudent(@RequestBody StudentDetail studentDetail) {
@@ -72,12 +74,12 @@ public class StudentController {
   }
 
   /**
-   * 更新処理
+   * 受講生詳細の更新処理を行います。 退会フラグ（論理削除）の更新もここで行います。
    *
    * @param studentDetail
    * @return　メッセージ
    */
-  @PostMapping("/updateStudent")
+  @PutMapping("/updateStudent")
   public ResponseEntity<String> updateStudent(@RequestBody StudentDetail studentDetail) {
     service.updateStudent(studentDetail);
     return ResponseEntity.ok("更新処理が成功しました");

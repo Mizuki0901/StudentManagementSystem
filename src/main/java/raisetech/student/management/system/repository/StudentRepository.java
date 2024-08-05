@@ -57,7 +57,7 @@ public interface StudentRepository {
   List<StudentCourse> searchCourseById(@Param("studentId") int studentId);
 
   /**
-   * studentsテーブルに新規データを登録
+   * studentsテーブルに新規受講生情報を登録します。 idは自動採番を行う
    *
    * @param student
    */
@@ -69,7 +69,9 @@ public interface StudentRepository {
   void insertStudent(Student student);
 
   /**
-   * students_coursesテーブルに新規データを登録
+   * students_coursesテーブルに新規受講生コース情報を登録します。 コースidは自動採番
+   *
+   * @param studentCourse
    */
   @Insert("INSERT INTO students_courses(student_id,course_name,date_start)"
       + " VALUES( #{studentId}, #{courseName}, #{dateStart})")
@@ -77,7 +79,7 @@ public interface StudentRepository {
   void insertCourse(StudentCourse studentCourse);
 
   /**
-   * studentsテーブルの情報を更新
+   * 受講生情報を更新します。
    *
    * @param student
    */
@@ -87,7 +89,7 @@ public interface StudentRepository {
   void updateStudent(Student student);
 
   /**
-   * students_coursesテーブルの情報を更新
+   * 受講生コース情報のコース名を更新します。
    */
   @Update(
       "UPDATE students_courses SET course_id=#{courseId}, course_name=#{courseName}, date_start=#{dateStart},"
