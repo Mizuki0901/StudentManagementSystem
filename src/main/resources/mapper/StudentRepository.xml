@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="raisetech.student.management.system.repository.StudentRepository">
+
+  <!--studentsテーブルのうちis_deleted=falseのデータを検索します -->
+  <select id="searchStudents" resultType="raisetech.student.management.system.data.Student">
+    SELECT *
+    FROM students
+    WHERE is_deleted = 0
+  </select>
+
+  <!--studentsテーブルのうちis_deleted=trueのデータを検索します。-->
+  <select id="searchDeleteStudents" resultType="raisetech.student.management.system.data.Student">
+    SELECT *
+    FROM students
+    WHERE is_deleted = 1
+  </select>
+
+  <!--受講生idに紐づく情報を検索します（単一検索）。-->
+  <select id="searchStudentById" resultType="raisetech.student.management.system.data.Student">
+    SELECT *
+    FROM students
+    WHERE student_id = #{studentId}
+  </select>
+
+  <!--students_coursesテーブルの全件取得を行います。-->
+  <select id="searchCourses" resultType="raisetech.student.management.system.data.StudentCourse">
+    SELECT *
+    FROM students_courses
+  </select>
+
+  <!--student_idに紐づくコース情報を検索します。-->
+  <select id="searchCourseById" resultType="raisetech.student.management.system.data.StudentCourse">
+    SELECT *
+    FROM students_courses
+    WHERE student_id = #{studentId}
+  </select>
+
+  <!--studentsテーブルに新規受講生情報を登録します。 idは自動採番を行う-->
+  <insert id="insertStudent" useGeneratedKeys="true" keyProperty="studentId" keyColumn="student_id">
+    INSERT INTO students(fullname,furigana,nickname,age,gender,mailaddress,area,remark,is_deleted)
+    VALUES( #{fullname}, #{furigana}, #{nickname}, #{age}, #{gender}, #{mailaddress}, #{area},
+    #{remark}, false)
+  </insert>
+
+  <!--students_coursesテーブルに新規受講生コース情報を登録します。 コースidは自動採番-->
+  <insert id="insertCourse" useGeneratedKeys="true" keyProperty="courseId" keyColumn="course_id">
+    INSERT INTO students_courses (student_id, course_name, date_start)
+    VALUES (#{studentId}, #{courseName}, #{dateStart})
+  </insert>
+
+  <!-- studentsテーブルの既存受講生情報を更新します。 -->
+  <update id="updateStudent">
+    UPDATE students
+    SET fullname=#{fullname},
+    furigana=#{furigana},
+    nickname=#{nickname},
+    age=#{age},
+    mailaddress=#{mailaddress},
+    area=#{area},
+    remark=#{remark},
+    is_deleted=#{isDeleted}
+    WHERE student_id=#{studentId}
+  </update>
+
+  <!-- 受講生コース情報のコース名を更新します。 -->
+  <update id="updateCourse">
+    UPDATE students_courses
+    SET course_id=#{courseId},
+    course_name=#{courseName},
+    WHERE course_id=#{courseId}")
+  </update>
+
+</mapper>
