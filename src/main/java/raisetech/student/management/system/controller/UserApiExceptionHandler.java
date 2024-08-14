@@ -13,6 +13,12 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 public class UserApiExceptionHandler {
 
+
+  /**
+   * エラーになった際、オブジェクトのクラスで設定したエラーメッセージが表示されるようにしています。
+   * @param e
+   * @return
+   */
   @ExceptionHandler(MethodArgumentNotValidException.class)
   public ResponseEntity<ErrorResponse> handleMethodArgumentNotValidException(
       MethodArgumentNotValidException e) {
