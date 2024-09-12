@@ -1,8 +1,6 @@
 package raisetech.student.management.system.controller;
 
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.Min;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +12,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import raisetech.student.management.system.domain.StudentDetail;
+import raisetech.student.management.system.exception.TestException;
 import raisetech.student.management.system.service.StudentService;
 
 /**
@@ -46,6 +45,14 @@ public class StudentController {
   }
 
   /**
+   * 全件検索でTestExceptionを発生させるAPIです。
+   */
+  @GetMapping("/allStudents")
+  public List<StudentDetail> getAllStudent() throws TestException {
+    throw new TestException("URLは「studentList」を利用してください。");
+  }
+
+  /**
    * 論理削除された受講生を検索し詳細の一覧を表示します。
    *
    * @return 退会した受講生詳細一覧
@@ -62,7 +69,7 @@ public class StudentController {
    * @return　受講生詳細
    */
   @GetMapping("/student/{studentId}")
-  public StudentDetail getStudent(@PathVariable @Min(1) @Max(3) int studentId) {
+  public StudentDetail getStudent(@PathVariable int studentId) throws TestException {
     return service.searchStudentById(studentId);
   }
 
