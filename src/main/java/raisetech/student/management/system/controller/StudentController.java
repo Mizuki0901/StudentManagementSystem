@@ -2,6 +2,7 @@ package raisetech.student.management.system.controller;
 
 import jakarta.validation.Valid;
 import java.util.List;
+import org.apache.ibatis.javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import raisetech.student.management.system.domain.StudentDetail;
+import raisetech.student.management.system.exception.ResourceNotFoundException;
 import raisetech.student.management.system.exception.TestException;
 import raisetech.student.management.system.service.StudentService;
 
@@ -69,7 +71,7 @@ public class StudentController {
    * @return　受講生詳細
    */
   @GetMapping("/student/{studentId}")
-  public StudentDetail getStudent(@PathVariable int studentId) throws TestException {
+  public StudentDetail getStudent(@PathVariable int studentId) throws ResourceNotFoundException {
     return service.searchStudentById(studentId);
   }
 

@@ -46,6 +46,17 @@ public class UserApiExceptionHandler {
   }
 
   /**
+   * ResourceNotFoundExceptionが発生した場合のハンドリングです。
+   *
+   * @param ex
+   * @return
+   */
+  @ExceptionHandler(ResourceNotFoundException.class)
+  public ResponseEntity<String> handleNotFoundException(ResourceNotFoundException ex) {
+    return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
+  }
+
+  /**
    * エラーレスポンスのクラス
    */
   public static final class ErrorResponse {
