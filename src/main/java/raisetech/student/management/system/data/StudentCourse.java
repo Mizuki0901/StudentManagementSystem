@@ -15,7 +15,7 @@ public class StudentCourse {
   @NotNull
   private int courseId;
 
-  @NotBlank
+  @NotNull
   private int studentId;
 
   @NotBlank

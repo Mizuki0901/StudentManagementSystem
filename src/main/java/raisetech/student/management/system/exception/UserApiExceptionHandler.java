@@ -30,7 +30,7 @@ public class UserApiExceptionHandler {
       errors.add(error);
     });
     ErrorResponse errorResponse =
-        new ErrorResponse(HttpStatus.BAD_REQUEST, "validation error", errors);
+        new ErrorResponse(HttpStatus.BAD_REQUEST, "エラーが発生しました。", errors);
     return ResponseEntity.badRequest().body(errorResponse);
   }
 
