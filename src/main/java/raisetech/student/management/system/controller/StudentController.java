@@ -59,12 +59,6 @@ public class StudentController {
     return service.searchDeletedStudentList();
   }
 
-  /**
-   * 受講生検索です。 student_idに紐づく受講生の情報を取得します。
-   *
-   * @param studentId(受講生id)
-   * @return　受講生詳細
-   */
   @Operation(summary = "受講生単一検索", responses = {
       @ApiResponse(responseCode = "200", description = "idに紐づく受講生情報を取得します。"),
       @ApiResponse(responseCode = "404", description = "idに紐づく受講生情報が存在しない場合はエラーメッセージが表示されます。",
@@ -75,12 +69,6 @@ public class StudentController {
     return service.searchStudentById(studentId);
   }
 
-  /**
-   * 受講生詳細の新規登録を行います。
-   *
-   * @param studentDetail
-   * @return 実行結果
-   */
   @Operation(summary = "受講生登録", description = "受講生の新規登録を行います。", responses = {
       @ApiResponse(responseCode = "200", description = "新規登録が完了したメッセージを表示します。"),
       @ApiResponse(responseCode = "400", description = "入力内容に不備がある場合にエラーメッセージを表示します。",
@@ -91,12 +79,6 @@ public class StudentController {
     return ResponseEntity.ok("新規登録が完了しました");
   }
 
-  /**
-   * 受講生詳細の更新処理を行います。 退会フラグ（論理削除）の更新もここで行います。
-   *
-   * @param studentDetail
-   * @return　メッセージ
-   */
   @Operation(summary = "受講生情報の更新", description = "受講生情報の更新を行います。退会フラグ（論理削除）の更新もここで行います。")
   @PutMapping("/updateStudent")
   public ResponseEntity<String> updateStudent(@RequestBody @Valid StudentDetail studentDetail) {
