@@ -2,6 +2,7 @@ package raisetech.student.management.system.service;
 
 import java.time.LocalDate;
 import java.util.List;
+import org.apache.ibatis.javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -9,6 +10,8 @@ import raisetech.student.management.system.controller.converter.StudentConverter
 import raisetech.student.management.system.data.Student;
 import raisetech.student.management.system.data.StudentCourse;
 import raisetech.student.management.system.domain.StudentDetail;
+import raisetech.student.management.system.exception.ResourceNotFoundException;
+import raisetech.student.management.system.exception.TestException;
 import raisetech.student.management.system.repository.StudentRepository;
 
 /**
@@ -80,12 +83,18 @@ public class StudentService {
 
   /**
    * 受講生詳細の単一検索です。 student_idに紐づく受講生情報を取得したあと、その受講生に紐づくコース情報を取得します。
+   * 入力された受講生IDが存在しない場合TestExceptionが発生します。
    *
    * @param studentId(受講生id)
    * @return　受講生情報の詳細
    */
-  public StudentDetail searchStudentById(int studentId) {
+  public StudentDetail searchStudentById(int studentId) throws ResourceNotFoundException {
     Student student = repository.searchStudentById(studentId);
+
+    if (student == null) {
+      throw new ResourceNotFoundException("そのIDは存在しません: ID=" + studentId);
+    }
+
     List<StudentCourse> studentCourseList = repository.searchCourseById(student.getStudentId());
     return new StudentDetail(student, studentCourseList);
   }
