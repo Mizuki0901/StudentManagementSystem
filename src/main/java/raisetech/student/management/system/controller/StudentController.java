@@ -1,8 +1,8 @@
 package raisetech.student.management.system.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import java.util.List;
-import org.apache.ibatis.javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -41,6 +41,7 @@ public class StudentController {
    *
    * @return　受講生詳細一覧
    */
+  @Operation(summary = "受講生一覧" ,description = "受講生の一覧を検索します。")
   @GetMapping("/studentList")
   public List<StudentDetail> getStudentList() {
     return service.searchStudentList();
@@ -81,6 +82,7 @@ public class StudentController {
    * @param studentDetail
    * @return 実行結果
    */
+  @Operation(summary = "受講生登録",description = "受講生の新規登録を行います。")
   @PostMapping("/registerStudent")
   public ResponseEntity<String> registerStudent(@RequestBody @Valid StudentDetail studentDetail) {
     StudentDetail responseStudentDetail = service.registerStudent(studentDetail);
